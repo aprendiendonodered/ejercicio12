@@ -2,7 +2,12 @@
     "name": "EJERCICIO12",
     "description": "A Node-RED Project",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-red-dashboard": "2.23.4",
+        "node-red-node-email": "1.8.2",
+        "node-red-node-mysql": "0.1.1",
+        "node-red-node-rbe": "0.2.9"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flow.json",
