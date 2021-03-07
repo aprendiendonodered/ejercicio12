@@ -1,1 +1,358 @@
-[]
+[
+    {
+        "id": "bed3ee2e.13eb7",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5ad14283.8d34cc",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "192.168.1.28",
+        "port": "3306",
+        "db": "wemosd1mini",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "fa5fbcc9.5dfbf",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "wemosd1mini",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "66d858ad.710958",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "enriquecrespo.com",
+        "port": "8883",
+        "tls": "272b2e8d.ac2742",
+        "clientid": "",
+        "usetls": true,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "7275912f.9f2bd",
+        "type": "ui_group",
+        "name": "Termostato",
+        "tab": "b2a84b57.6de6b8",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "272b2e8d.ac2742",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true
+    },
+    {
+        "id": "b2a84b57.6de6b8",
+        "type": "ui_tab",
+        "name": "Tab 1",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "85c674dc.420ae8",
+        "type": "mysql",
+        "z": "bed3ee2e.13eb7",
+        "mydb": "fa5fbcc9.5dfbf",
+        "name": "",
+        "x": 760,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3fcd049d.a9babc",
+        "type": "mqtt in",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "topic": "cursocefire/wemos/enrique/temperatura",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "66d858ad.710958",
+        "x": 180,
+        "y": 60,
+        "wires": [
+            [
+                "2c7b2474.037edc",
+                "4810c4a7.2d20dc",
+                "7c161008.86f37",
+                "d9dc202a.b1c6c"
+            ]
+        ]
+    },
+    {
+        "id": "2c7b2474.037edc",
+        "type": "debug",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "4810c4a7.2d20dc",
+        "type": "function",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "func": "var temp = msg.payload;\n\nmsg.topic = \"INSERT INTO `Temperaturas`(`temperatura`) VALUES (\" + temp + \")\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 520,
+        "y": 60,
+        "wires": [
+            [
+                "85c674dc.420ae8"
+            ]
+        ]
+    },
+    {
+        "id": "7c161008.86f37",
+        "type": "switch",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "21",
+                "vt": "num"
+            },
+            {
+                "t": "gt",
+                "v": "23",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 110,
+        "y": 340,
+        "wires": [
+            [
+                "53a0ebad.3bffd4"
+            ],
+            [
+                "1d92e07b.b5ab7"
+            ]
+        ]
+    },
+    {
+        "id": "53a0ebad.3bffd4",
+        "type": "change",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 310,
+        "y": 320,
+        "wires": [
+            [
+                "7ed52120.8c074"
+            ]
+        ]
+    },
+    {
+        "id": "1d92e07b.b5ab7",
+        "type": "change",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 310,
+        "y": 360,
+        "wires": [
+            [
+                "7ed52120.8c074"
+            ]
+        ]
+    },
+    {
+        "id": "7ed52120.8c074",
+        "type": "rbe",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 480,
+        "y": 340,
+        "wires": [
+            [
+                "2f05b4e3.cb422c",
+                "af954426.07b168",
+                "231374df.5e422c"
+            ]
+        ]
+    },
+    {
+        "id": "2f05b4e3.cb422c",
+        "type": "debug",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "af954426.07b168",
+        "type": "mqtt out",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "topic": "cursocefire/wemos/enrique/rele",
+        "qos": "",
+        "retain": "",
+        "broker": "66d858ad.710958",
+        "x": 730,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "6bb8ebe1.bda6b4",
+        "type": "e-mail",
+        "z": "bed3ee2e.13eb7",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "aprendiendoraspberrypi@gmail.com",
+        "dname": "",
+        "x": 750,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "231374df.5e422c",
+        "type": "function",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "func": "if (msg.payload == 1){\n    msg.topic = \"Relé encendido\";\n    msg.payload = \"Temperatura baja, enciendo relé\";\n}\nelse {\n    msg.topic = \"Relé apagado\";\n    msg.payload = \"Temperatura alta, apago relé\";\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 520,
+        "y": 500,
+        "wires": [
+            [
+                "6bb8ebe1.bda6b4",
+                "23860239.17f8ae"
+            ]
+        ]
+    },
+    {
+        "id": "d9dc202a.b1c6c",
+        "type": "ui_gauge",
+        "z": "bed3ee2e.13eb7",
+        "name": "",
+        "group": "7275912f.9f2bd",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "35",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "25",
+        "seg2": "30",
+        "x": 360,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "23860239.17f8ae",
+        "type": "ui_text",
+        "z": "bed3ee2e.13eb7",
+        "group": "7275912f.9f2bd",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Estado Relé",
+        "format": "{{msg.topic}}",
+        "layout": "col-center",
+        "x": 700,
+        "y": 580,
+        "wires": []
+    }
+]
